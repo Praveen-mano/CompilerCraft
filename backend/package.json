@@ -1,0 +1,15 @@
+{
+  "name": "compiler-craft-backend",
+  "version": "1.0.0",
+  "description": "Backend for Compiler Craft",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.29.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
