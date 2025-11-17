@@ -1,0 +1,27 @@
+{
+  "name": "compiler-craft-root",
+  "version": "1.0.0",
+  "description": "Root package to run both frontend and backend for Compiler Craft",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start:backend": "node backend/server.js",
+    "start:frontend": "vite --config frontend/vite.config.js",
+    "build:frontend": "vite build --config frontend/vite.config.js",
+    "preview:frontend": "vite preview --config frontend/vite.config.js --port 5500",
+    "start": "concurrently \"npm:start:backend\" \"npm:start:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "serve": "^14.2.3",
+    "@vitejs/plugin-react": "^4.3.3",
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "@google/genai": "^1.29.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+    ,"react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
