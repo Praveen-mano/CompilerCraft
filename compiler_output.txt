@@ -1,0 +1,161 @@
+============ PHASE 1 — RAW TEXT ============
+int main() {
+  int a = 5;
+  int b = 10;
+  int c = a + b;
+  return c;
+}
+
+   Raw text phase: the compiler reads the source file as plain text.
+   This includes preprocessor lines like #include and all comments/whitespace.
+   If the file is empty or missing, the run aborts with a helpful message.
+
+============ PHASE 2 — LEXICAL ANALYSIS ============
+| Lexeme | Token Type ||---|---|| int | KEYWORD || main | IDENTIFIER || ( | L_PAREN || ) | R_PAREN || { | L_BRACE || int | KEYWORD || a | IDENTIFIER || = | ASSIGN_OP || 5 | INTEGER_LITERAL || ; | SEMICOLON || int | KEYWORD || b | IDENTIFIER || = | ASSIGN_OP || 10 | INTEGER_LITERAL || ; | SEMICOLON || int | KEYWORD || c | IDENTIFIER || = | ASSIGN_OP || a | IDENTIFIER || + | ADD_OP || b | IDENTIFIER || ; | SEMICOLON || return | KEYWORD || c | IDENTIFIER || ; | SEMICOLON || } | R_BRACE |
+
+   The lexical analyzer (scanner) reads the source code character by character and groups them into meaningful sequences called lexemes. Each lexeme is then converted into a token, which is a pair consisting of a token type and its attribute value.
+
+============ PHASE 3 — SYNTAX ANALYSIS ============
+{
+  "name": "Program",
+  "children": [
+    {
+      "name": "FunctionDeclaration",
+      "attributes": {
+        "returnType": "int",
+        "name": "main"
+      },
+      "children": [
+        {
+          "name": "ParameterList",
+          "children": []
+        },
+        {
+          "name": "BlockStatement",
+          "children": [
+            {
+              "name": "VariableDeclaration",
+              "attributes": {
+                "type": "int",
+                "name": "a"
+              },
+              "children": [
+                {
+                  "name": "IntegerLiteral",
+                  "attributes": {
+                    "value": "5"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "VariableDeclaration",
+              "attributes": {
+                "type": "int",
+                "name": "b"
+              },
+              "children": [
+                {
+                  "name": "IntegerLiteral",
+                  "attributes": {
+                    "value": "10"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "VariableDeclaration",
+              "attributes": {
+                "type": "int",
+                "name": "c"
+              },
+              "children": [
+                {
+                  "name": "BinaryExpression",
+                  "attributes": {
+                    "operator": "+"
+                  },
+                  "children": [
+                    {
+                      "name": "Identifier",
+                      "attributes": {
+                        "name": "a"
+                      }
+                    },
+                    {
+                      "name": "Identifier",
+                      "attributes": {
+                        "name": "b"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "ReturnStatement",
+              "children": [
+                {
+                  "name": "Identifier",
+                  "attributes": {
+                    "name": "c"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+   The syntax analyzer (parser) takes the stream of tokens from the lexical analyzer and builds a hierarchical representation of the program, typically an Abstract Syntax Tree (AST). It checks if the token sequence conforms to the grammar rules of the language.
+
+============ PHASE 4 — SEMANTIC ANALYSIS ============
+The AST annotated with type information and a symbol table. For this code, the symbol table would include: 'main' (function, returns int), 'a' (int), 'b' (int), 'c' (int). All operations (assignments, addition) are type-compatible: 'a' (int) + 'b' (int) results in an 'int', which is assigned to 'c' (int). The return type of 'main' (int) matches the type of 'c' (int) being returned. No semantic errors found.
+
+   This phase checks the program for semantic errors, such as type mismatches, undeclared variables, or incorrect function arguments. It also gathers type information and builds a symbol table, annotating the AST with this information.
+
+============ PHASE 5 — INTERMEDIATE CODE GENERATION ============
+Three-Address Code (TAC):
+_t0 = 5
+a = _t0
+_t1 = 10
+b = _t1
+_t2 = a + b
+c = _t2
+return c
+
+   The compiler translates the annotated AST into an intermediate representation (IR), which is typically machine-independent. This IR makes it easier to perform optimizations and generate code for different target architectures.
+
+============ PHASE 6 — OPTIMIZATION ============
+Optimized Three-Address Code (after constant propagation and folding):
+a = 5
+b = 10
+c = 15
+return c
+
+   This phase attempts to improve the intermediate code to make the target program run faster, use less memory, or consume less power. Common optimizations include constant folding, dead code elimination, and common subexpression elimination.
+
+============ PHASE 7 — CODE GENERATION ============
+Example x86-64 Assembly Code:
+main:
+  push rbp
+  mov rbp, rsp
+  sub rsp, 16       ; Allocate stack space for local variables (a, b, c)
+
+  mov dword ptr [rbp-4], 5  ; int a = 5; (store 5 at address rbp-4)
+  mov dword ptr [rbp-8], 10 ; int b = 10; (store 10 at address rbp-8)
+
+  ; int c = a + b; (optimized to c = 15)
+  mov dword ptr [rbp-12], 15 ; store 15 at address rbp-12
+
+  ; return c;
+  mov eax, dword ptr [rbp-12] ; Load value of c (15) into EAX (return register)
+
+  leave             ; Restore RBP and RSP
+  ret               ; Return from function
+
+   The final phase translates the optimized intermediate code into the target machine code (e.g., assembly code). This involves instruction selection, register allocation, and instruction scheduling.
+

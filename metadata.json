@@ -1,0 +1,5 @@
+{
+  "name": "Compiler Craft",
+  "description": "An intelligent learning tool that uses Large Language Model (LLM) technology to explain how a compiler works in a simple and interactive way. It helps students and developers understand how source code is converted into executable programs by breaking down each compiler phase.",
+  "requestFramePermissions": []
+}
