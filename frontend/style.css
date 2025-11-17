@@ -1,0 +1,15 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+.font-roboto-mono {
+  font-family: 'Roboto Mono', monospace;
+}
+/* New Title Gradient Style */
+.title-gradient {
+    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    display: inline-block;
+}
